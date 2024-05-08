@@ -1,0 +1,90 @@
+[gd_scene load_steps=10 format=3 uid="uid://bwdwj1qmtexh6"]
+
+[ext_resource type="Texture2D" uid="uid://u34f5bcdlfl3" path="res://Sprites/Backgrounds/background_base.png" id="1_16fob"]
+[ext_resource type="Texture2D" uid="uid://dg1dle34udda1" path="res://Sprites/Character/base_icon.png" id="2_0ai3w"]
+[ext_resource type="Script" path="res://Cards/BaseCard.gd" id="2_ygjbg"]
+[ext_resource type="Texture2D" uid="uid://bqws2t7vusjlq" path="res://Icons/heart.png" id="3_uvbkt"]
+[ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_s5tbi"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e1ykt"]
+properties/0/path = NodePath(".:health")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:player_owner")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+properties/2/path = NodePath(".:lane")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kydl"]
+size = Vector2(134.335, 91.0922)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_riiyq"]
+resource_local_to_scene = true
+size = Vector2(280, 47.7778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7g0qs"]
+resource_local_to_scene = true
+size = Vector2(280, 51.1111)
+
+[node name="CardBack" type="Sprite2D"]
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("1_16fob")
+script = ExtResource("2_ygjbg")
+
+[node name="CardIcon" type="Sprite2D" parent="."]
+position = Vector2(-76, -128)
+texture = ExtResource("2_0ai3w")
+
+[node name="Heart" type="Sprite2D" parent="."]
+position = Vector2(90.5556, -151.556)
+scale = Vector2(0.116319, 0.116319)
+texture = ExtResource("3_uvbkt")
+
+[node name="HealthText" type="RichTextLabel" parent="."]
+offset_left = 78.8889
+offset_top = -163.333
+offset_right = 129.889
+offset_bottom = -113.333
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+theme = ExtResource("4_s5tbi")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[center]0"
+fit_content = true
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e1ykt")
+
+[node name="SelectButton" type="Area2D" parent="."]
+visible = false
+scale = Vector2(2.08435, 4.37896)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectButton"]
+position = Vector2(-5.84635e-06, 0.126861)
+scale = Vector2(0.999999, 0.999999)
+shape = SubResource("RectangleShape2D_0kydl")
+
+[node name="AttackButtons" type="Node2D" parent="."]
+visible = false
+z_index = 1
+
+[node name="Attack1" type="Area2D" parent="AttackButtons"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackButtons/Attack1"]
+position = Vector2(0, -15.5556)
+shape = SubResource("RectangleShape2D_riiyq")
+
+[node name="Attack2" type="Area2D" parent="AttackButtons"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackButtons/Attack2"]
+position = Vector2(0, 36.6667)
+shape = SubResource("RectangleShape2D_7g0qs")
+
+[connection signal="input_event" from="SelectButton" to="." method="_on_select_button_input_event"]
+[connection signal="input_event" from="AttackButtons/Attack1" to="." method="_on_attack_button_input_event" binds= [1]]
+[connection signal="input_event" from="AttackButtons/Attack2" to="." method="_on_attack_button_input_event" binds= [2]]

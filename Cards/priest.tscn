@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://rxg2fypxo3aw"]
+
+[ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="1_661wj"]
+[ext_resource type="Texture2D" uid="uid://ssenj2mev254" path="res://Sprites/Backgrounds/background_support.png" id="2_3426d"]
+[ext_resource type="Texture2D" uid="uid://dgvbgkqvsneve" path="res://Sprites/Character/priest_icon.png" id="3_llta0"]
+[ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_rnobd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_64fwv"]
+resource_local_to_scene = true
+size = Vector2(280, 47.7778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uy7tn"]
+resource_local_to_scene = true
+size = Vector2(280, 73.3333)
+
+[node name="Priest" instance=ExtResource("1_661wj")]
+texture = ExtResource("2_3426d")
+max_health = 6
+
+[node name="CardIcon" parent="." index="0"]
+texture = ExtResource("3_llta0")
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="." index="1"]
+offset_left = -130.0
+offset_top = -34.4444
+offset_right = 526.0
+offset_bottom = 130.556
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_rnobd")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Heal 2 Health to adjacent allies. Heal 1 Health to this."
+fit_content = true
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="." index="2"]
+offset_left = -130.0
+offset_top = 19.8889
+offset_right = 526.0
+offset_bottom = 184.889
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_rnobd")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/any_mana.png[/img]:Remove all block on the enemy here.
+Deal 2 Damage."
+fit_content = true
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack1" index="0"]
+shape = SubResource("RectangleShape2D_64fwv")
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack2" index="0"]
+position = Vector2(0, 47.7778)
+shape = SubResource("RectangleShape2D_uy7tn")

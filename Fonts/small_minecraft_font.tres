@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c202glgpy6vvs"]
+
+[ext_resource type="FontFile" uid="uid://c3hgydm7drnym" path="res://Fonts/Tahoma Regular font.ttf" id="1_7cyl3"]
+
+[resource]
+default_font = ExtResource("1_7cyl3")
+default_font_size = 40

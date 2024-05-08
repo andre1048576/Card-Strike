@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm0k3ipe7p35p"]
+
+[ext_resource type="Script" path="res://MultiplayerController.gd" id="1_khq16"]
+
+[node name="Lobby" type="Node2D"]
+script = ExtResource("1_khq16")
+
+[node name="Host" type="Button" parent="."]
+offset_left = 206.0
+offset_top = 134.0
+offset_right = 348.0
+offset_bottom = 175.0
+text = "Host"
+
+[node name="Join" type="Button" parent="."]
+offset_left = 206.0
+offset_top = 213.0
+offset_right = 348.0
+offset_bottom = 254.0
+text = "Join"
+
+[node name="Start" type="Button" parent="."]
+offset_left = 207.0
+offset_top = 299.0
+offset_right = 349.0
+offset_bottom = 340.0
+text = "Start
+"
+
+[node name="Name" type="LineEdit" parent="."]
+offset_left = 125.0
+offset_top = 51.0
+offset_right = 451.0
+offset_bottom = 82.0
+
+[connection signal="button_down" from="Host" to="." method="_on_host_button_down"]
+[connection signal="button_down" from="Join" to="." method="_on_join_button_down"]
+[connection signal="button_down" from="Start" to="." method="_on_start_button_down"]

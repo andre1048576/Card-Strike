@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://c08yfawv572df"]
+
+[ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="1_wr6py"]
+[ext_resource type="Texture2D" uid="uid://bkubsax383qvq" path="res://Sprites/Backgrounds/background_mage.png" id="2_tg3vn"]
+[ext_resource type="Texture2D" uid="uid://q6suomwk5b0" path="res://Sprites/Character/wizard_icon.png" id="3_c8tpa"]
+[ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_7tq0e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxhwe"]
+resource_local_to_scene = true
+size = Vector2(280, 47.7778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7v73d"]
+resource_local_to_scene = true
+size = Vector2(280, 51.1111)
+
+[node name="Wizard" instance=ExtResource("1_wr6py")]
+texture = ExtResource("2_tg3vn")
+max_health = 6
+
+[node name="CardIcon" parent="." index="0"]
+texture = ExtResource("3_c8tpa")
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="." index="4"]
+offset_left = -130.0
+offset_top = -34.4444
+offset_right = 526.0
+offset_bottom = 130.556
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_7tq0e")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/bonus_action.png[/img][img=50]res://Icons/gray_mana.png[/img]:Stun any enemy. Stun any enemy."
+fit_content = true
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="." index="5"]
+offset_left = -130.0
+offset_top = 19.8889
+offset_right = 526.0
+offset_bottom = 184.889
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_7tq0e")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Deal 3 Damage. If the enemy is stunned, Deal 3 Damage."
+fit_content = true
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack1" index="0"]
+shape = SubResource("RectangleShape2D_nxhwe")
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack2" index="0"]
+shape = SubResource("RectangleShape2D_7v73d")

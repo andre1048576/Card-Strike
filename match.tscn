@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3t5hwpoyaymd"]
+
+[ext_resource type="Script" path="res://match.gd" id="1_g3j7b"]
+[ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="2_22qm7"]
+[ext_resource type="PackedScene" uid="uid://dkfr4qajremvn" path="res://match_info.tscn" id="2_au830"]
+[ext_resource type="Script" path="res://NetworkPoll.gd" id="3_we5l8"]
+[ext_resource type="Script" path="res://ClientPolled.gd" id="4_uenrn"]
+
+[node name="Match" type="Node2D" node_paths=PackedStringArray("match_info")]
+script = ExtResource("1_g3j7b")
+match_info = NodePath("Network/MatchInfo")
+
+[node name="CardSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Cards/priest.tscn", "res://Cards/thief.tscn", "res://Cards/defender.tscn", "res://Cards/gunner.tscn", "res://Cards/warrior.tscn", "res://Cards/wizard.tscn")
+spawn_path = NodePath("../Network/Cards")
+
+[node name="MatchInfoSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://match_info.tscn")
+spawn_path = NodePath("../Network")
+
+[node name="Network" type="Node" parent="."]
+
+[node name="Cards" type="Node" parent="Network"]
+
+[node name="MatchInfo" parent="Network" node_paths=PackedStringArray("network", "matchNode") instance=ExtResource("2_au830")]
+network = NodePath("..")
+matchNode = NodePath("../..")
+
+[node name="NotNetwork" type="Node" parent="."]
+
+[node name="NetworkPoll" type="Node" parent="." node_paths=PackedStringArray("matchInfo")]
+script = ExtResource("3_we5l8")
+matchInfo = NodePath("../Network/MatchInfo")
+
+[node name="ClientPolled" type="Node" parent="NetworkPoll" node_paths=PackedStringArray("notNetwork", "networkPoll", "network")]
+script = ExtResource("4_uenrn")
+notNetwork = NodePath("../../NotNetwork")
+networkPoll = NodePath("..")
+network = NodePath("../../Network")
+
+[node name="0" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(250, 800)
+
+[node name="1" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(550, 800)
+
+[node name="2" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(850, 800)
+
+[node name="3" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(250, 220)
+
+[node name="4" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(550, 220)
+
+[node name="5" parent="NetworkPoll/ClientPolled" instance=ExtResource("2_22qm7")]
+z_index = -2
+position = Vector2(850, 220)
+
+[node name="Confirm" type="Button" parent="NetworkPoll"]
+offset_left = 1722.0
+offset_top = 17.0
+offset_right = 1892.0
+offset_bottom = 85.0
+text = "Confirm"
+
+[node name="ConfirmFunctions" type="Node" parent="NetworkPoll"]
+
+[connection signal="pressed" from="NetworkPoll/Confirm" to="NetworkPoll/ClientPolled" method="confirm_button_pressed"]

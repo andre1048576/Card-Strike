@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bbboiim2ergkw"]
+
+[ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="1_87fla"]
+[ext_resource type="Texture2D" uid="uid://dxok7jwkj4h0n" path="res://Sprites/Backgrounds/background_marksman.png" id="2_uysbj"]
+[ext_resource type="Texture2D" uid="uid://bi4c4cwyma0ts" path="res://Sprites/Character/gunner_icon.png" id="3_fxmo0"]
+[ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_gvhw1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4dhs"]
+resource_local_to_scene = true
+size = Vector2(280, 47.7778)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1wxah"]
+resource_local_to_scene = true
+size = Vector2(280, 83.3333)
+
+[node name="Gunner" instance=ExtResource("1_87fla")]
+texture = ExtResource("2_uysbj")
+max_health = 7
+
+[node name="CardIcon" parent="." index="0"]
+texture = ExtResource("3_fxmo0")
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="." index="4"]
+offset_left = -130.0
+offset_top = -34.4444
+offset_right = 526.0
+offset_bottom = 130.556
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_gvhw1")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Deal 1 Damage to 2 different nearby enemies."
+fit_content = true
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="." index="5"]
+offset_left = -130.0
+offset_top = 19.8889
+offset_right = 526.0
+offset_bottom = 184.889
+scale = Vector2(0.4, 0.4)
+mouse_filter = 2
+theme = ExtResource("4_gvhw1")
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+bbcode_enabled = true
+text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Deal 2 Damage to nearby enemies. If this swapped last turn, this costs [img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/any_mana.png[/img] instead."
+fit_content = true
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack1" index="0"]
+shape = SubResource("RectangleShape2D_t4dhs")
+
+[node name="CollisionShape2D" parent="AttackButtons/Attack2" index="0"]
+position = Vector2(0, 60.5556)
+shape = SubResource("RectangleShape2D_1wxah")
