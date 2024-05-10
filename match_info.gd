@@ -6,6 +6,8 @@ var lanes := [[null,null,null],[null,null,null]]
 @export var network : Node
 @export var matchNode : Match
 
+@export var banned_cards := [null,null]
+
 func is_lane_empty(player_num : int,lane_num : int) -> bool:
 	return lanes[player_num-1][lane_num] == null
 
@@ -15,6 +17,9 @@ func add_card_to_match(card : Card,team : int,lane : int):
 	card.player_owner = team
 	card.lane = lane
 	network.get_node("Cards").add_child(card,true)
+
+func ban_card(card : Card,team : int):
+	banned_cards[team] = card.name
 
 func empty_lanes(player_num : int) -> Array:
 	var output := []
@@ -31,7 +36,7 @@ func get_card_at_lane(team : int,lane : int):
 func get_card_name_at_lane(team : int,lane : int):
 	return lane_names[team][lane]
 
-#TODO: figure out how the hell to get the unit name from the cardIndex in match
+
 func has_card_deployed(team,cardIndex):
 	for i in 3:
 		var card = get_card_name_at_lane(team,i)
@@ -40,3 +45,6 @@ func has_card_deployed(team,cardIndex):
 		if card.contains(matchNode.get_unit_from_index(cardIndex).name):
 			return true
 	return false
+
+func is_card_banned(team : int,cardIndex):
+	return banned_cards[team] == matchNode.get_unit_from_index(cardIndex).name

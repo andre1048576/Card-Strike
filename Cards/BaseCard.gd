@@ -10,10 +10,6 @@ extends Sprite2D
 		position.x = 250 + new_lane*300
 		lane = new_lane
 
-signal pressed()
-signal attack_selected(card_index,attack_index)
-signal attack_unselected(attack_index)
-
 @onready var select_button := $SelectButton
 @onready var heart_name := $HealthText
 @onready var attack_buttons := $AttackButtons
@@ -26,28 +22,17 @@ var health : int :
 func _ready():
 	health = max_health
 	if find_parent("Network") and not multiplayer.is_server():
-		var isPlayerOwner = GameManager.get_own_player_num() == player_owner
-		if isPlayerOwner:
+		if is_local_player_card():
 			position.y = 800
 		else:
 			position.y = 220
 
-func toggle_clickable(vis = not select_button.visible):
-	select_button.visible = vis
-
-func toggle_attacks_clickable(vis = not attack_buttons.visible):
-	#TODO: check that the player owns the mana for the attack
-	attack_buttons.visible = true
-
-func _on_attack_pressed(attack_index : int):
-	print('an attack was clicked!',attack_index)
+func is_local_player_card():
+	return GameManager.get_own_player_num() == player_owner
 	
+func get_selection_button():
+	return $SelectButton
 
-
-func _on_select_button_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.pressed:
-		emit_signal("pressed",self)
-
-func _on_attack_button_input_event(viewport, event, shape_idx,attack_index : int):
-	if event is InputEventMouseButton and event.pressed:
-		_on_attack_pressed(attack_index)
+#TODO: ensure the player has the mana to play the attacks
+func get_attack_buttons():
+	return attack_buttons.get_children()

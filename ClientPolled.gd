@@ -14,62 +14,54 @@ var client_cards : Array :
 var confirmFunctions
 var selected := {}
 var validInput
-
+var currentGroupButtons : Array[GroupButton]
 var is_polled := false
-
-func _ready():
-	notNetwork.child_entered_tree.connect(card_added)
-	for node : Card in get_children():
-		node.pressed.connect(selected_a_lane)
-
-func card_added(card):
-	card.pressed.connect(selected_a_card)
-
-func selected_a_lane(card : Card):
-	if selected.lanes.has(card.name.to_int()):
-		unselected_a_lane(card)
-		return
-	selected.lanes.append(card.name.to_int())
-	if len(selected.lanes) != validInput.num_lanes:
-		return
-	for lane_index in validInput.lanes:
-		if lane_index in selected.lanes:
-			continue
-		get_child(lane_index).toggle_clickable(false)
-		
-
-func unselected_a_lane(card : Card):
-	selected.lanes.erase(card.name.to_int())
-	for lane_index in validInput.lanes:
-		if lane_index in selected.lanes:
-			continue
-		get_child(lane_index).toggle_clickable(true)
 
 @rpc()
 func pollClient(confFunctions,acceptableInput):
 	reset(confFunctions,acceptableInput)
 	if acceptableInput.has("client_cards"):
-		pollClientCards(confFunctions,acceptableInput)
-	elif acceptableInput.has("attack"):
+		pollClientCards()
+	if acceptableInput.has("lanes"):
+		pollLanes()
+	if acceptableInput.has("attack"):
 		print("not polling client cards yipee",acceptableInput)
-		pollClientAttacks(confFunctions,acceptableInput)
-
-func pollClientCards(_confFunctions,_acceptableInput):
+		pollAttacks()
+	
+func pollClientCards():
 	client_cards = notNetwork.get_children()
-	selected.lanes = []
+	var clientCardGroupButton = GroupButton.new()
+	clientCardGroupButton.pressed.connect(selected_a_card)
+	clientCardGroupButton.unpressed.connect(unselected_a_card)
+	for card : Card in client_cards as Array[Card]:
+		clientCardGroupButton.add(card.get_selection_button())
+	clientCardGroupButton.instantiate()
+	currentGroupButtons.append(clientCardGroupButton)
+
+func pollLanes():
+	var laneGroupButton = GroupButton.new()
+	laneGroupButton.pressed.connect(selected_a_lane)
+	laneGroupButton.unpressed.connect(unselected_a_lane)
 	for lane : int in validInput.lanes:
-		get_child(lane).toggle_clickable(true)
-	for card in client_cards as Array[Card]:
-		card.toggle_clickable(true)
+		laneGroupButton.add(get_child(lane).get_selection_button())
+	laneGroupButton.instantiate()
+	currentGroupButtons.append(laneGroupButton)
 
-func finishedPollClientCards():
-	for card : Card in get_children():
-		card.toggle_clickable(false)
-	init_client_cards[selected.selected_client_card].queue_free()
+func buttongroup_clicked(pressed):
+	print(pressed)
 
-func pollClientAttacks(confFunctions,acceptableInput):
+func finishedPoll():
+	for groupButton in currentGroupButtons:
+		groupButton.clear()
+	currentGroupButtons = []
+
+func pollAttacks():
+	var attackButtonGroup = GroupButton.new()
 	for card : Card in network.get_node("Cards").get_children():
-		card.toggle_attacks_clickable()
+		if card.is_local_player_card():
+			for attackButton in card.get_attack_buttons():
+				attackButtonGroup.add(attackButton)
+	attackButtonGroup.instantiate()
 
 func reset(confFunctions,acceptableInput):
 	selected = {}
@@ -78,20 +70,16 @@ func reset(confFunctions,acceptableInput):
 	validInput = acceptableInput
 
 func selected_a_card(card : Card):
-	if selected.has("selected_client_card"):
-		if selected.selected_client_card == init_client_cards.find(card):
-			unselected_a_card(card)
-			return
 	selected.selected_client_card = init_client_cards.find(card)
-	for other_card : Card in client_cards:
-		if other_card == card:
-			continue
-		other_card.toggle_clickable(false)
 
 func unselected_a_card(_card : Card):
 	selected.erase("selected_client_card")
-	for other_card in client_cards:
-		other_card.toggle_clickable(true)
+
+func selected_a_lane(card : Card):
+	selected.lanes = [card.name.to_int()]
+
+func unselected_a_lane(card : Card):
+	selected.erase("lanes")
 
 func client_confirm_input(params):
 	for confirmFunction in confirmFunctions:
@@ -105,5 +93,4 @@ func confirm_button_pressed():
 	if client_confirm_input(selected):
 		networkPoll.confirm_input.rpc_id(1,selected)
 		is_polled = false
-		if validInput.has("client_cards"):
-			finishedPollClientCards()
+		finishedPoll()

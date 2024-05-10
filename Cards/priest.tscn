@@ -1,17 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://rxg2fypxo3aw"]
+[gd_scene load_steps=5 format=3 uid="uid://rxg2fypxo3aw"]
 
 [ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="1_661wj"]
 [ext_resource type="Texture2D" uid="uid://ssenj2mev254" path="res://Sprites/Backgrounds/background_support.png" id="2_3426d"]
 [ext_resource type="Texture2D" uid="uid://dgvbgkqvsneve" path="res://Sprites/Character/priest_icon.png" id="3_llta0"]
 [ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_rnobd"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_64fwv"]
-resource_local_to_scene = true
-size = Vector2(280, 47.7778)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uy7tn"]
-resource_local_to_scene = true
-size = Vector2(280, 73.3333)
 
 [node name="Priest" instance=ExtResource("1_661wj")]
 texture = ExtResource("2_3426d")
@@ -47,9 +39,16 @@ text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png
 Deal 2 Damage."
 fit_content = true
 
-[node name="CollisionShape2D" parent="AttackButtons/Attack1" index="0"]
-shape = SubResource("RectangleShape2D_64fwv")
+[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
+visible = false
+layout_mode = 0
+offset_top = 9.0
+offset_right = 263.0
+offset_bottom = 56.0
 
-[node name="CollisionShape2D" parent="AttackButtons/Attack2" index="0"]
-position = Vector2(0, 47.7778)
-shape = SubResource("RectangleShape2D_uy7tn")
+[node name="CheckButton2" type="CheckButton" parent="AttackButtons" index="1"]
+visible = false
+layout_mode = 0
+offset_top = 60.0
+offset_right = 263.0
+offset_bottom = 130.0

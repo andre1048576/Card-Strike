@@ -28,6 +28,8 @@ func confirm_input(params):
 	_input_confirmed.emit({params = params,valid = not hasFailed})
 
 func confirm_lane_input(params,validInput):
+	if not params.lanes:
+		return false
 	params.lanes = remove_duplicates(params.lanes)
 	if len(params.lanes) != validInput.num_lanes:
 		return false
@@ -53,10 +55,9 @@ func confirm_client_cards(params : Dictionary,validInput):
 	var playerId = currPlayerNum
 	if playerId == null:
 		playerId = GameManager.get_own_player_num()
-	print_rich("[color=green]",playerId," ",matchInfo.has_card_deployed(playerId,params.selected_client_card),multiplayer.get_unique_id())
-	if matchInfo.get_card_name_at_lane(playerId,validInput.lanes[0]):
-		return false
 	if matchInfo.has_card_deployed(playerId,params.selected_client_card):
+		return false
+	if matchInfo.is_card_banned(playerId,params.selected_client_card):
 		return false
 	return true
 

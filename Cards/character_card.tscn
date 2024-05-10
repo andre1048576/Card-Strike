@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bwdwj1qmtexh6"]
+[gd_scene load_steps=7 format=3 uid="uid://bwdwj1qmtexh6"]
 
 [ext_resource type="Texture2D" uid="uid://u34f5bcdlfl3" path="res://Sprites/Backgrounds/background_base.png" id="1_16fob"]
 [ext_resource type="Texture2D" uid="uid://dg1dle34udda1" path="res://Sprites/Character/base_icon.png" id="2_0ai3w"]
@@ -16,17 +16,6 @@ properties/1/replication_mode = 0
 properties/2/path = NodePath(".:lane")
 properties/2/spawn = true
 properties/2/replication_mode = 1
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kydl"]
-size = Vector2(134.335, 91.0922)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_riiyq"]
-resource_local_to_scene = true
-size = Vector2(280, 47.7778)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7g0qs"]
-resource_local_to_scene = true
-size = Vector2(280, 51.1111)
 
 [node name="CardBack" type="Sprite2D"]
 scale = Vector2(0.9, 0.9)
@@ -60,31 +49,18 @@ drag_and_drop_selection_enabled = false
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_e1ykt")
 
-[node name="SelectButton" type="Area2D" parent="."]
+[node name="SelectButton" type="CheckButton" parent="."]
 visible = false
+offset_left = -141.0
+offset_top = -199.0
+offset_right = -6.0
+offset_bottom = -108.0
 scale = Vector2(2.08435, 4.37896)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectButton"]
-position = Vector2(-5.84635e-06, 0.126861)
-scale = Vector2(0.999999, 0.999999)
-shape = SubResource("RectangleShape2D_0kydl")
-
-[node name="AttackButtons" type="Node2D" parent="."]
-visible = false
-z_index = 1
-
-[node name="Attack1" type="Area2D" parent="AttackButtons"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackButtons/Attack1"]
-position = Vector2(0, -15.5556)
-shape = SubResource("RectangleShape2D_riiyq")
-
-[node name="Attack2" type="Area2D" parent="AttackButtons"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackButtons/Attack2"]
-position = Vector2(0, 36.6667)
-shape = SubResource("RectangleShape2D_7g0qs")
-
-[connection signal="input_event" from="SelectButton" to="." method="_on_select_button_input_event"]
-[connection signal="input_event" from="AttackButtons/Attack1" to="." method="_on_attack_button_input_event" binds= [1]]
-[connection signal="input_event" from="AttackButtons/Attack2" to="." method="_on_attack_button_input_event" binds= [2]]
+[node name="AttackButtons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -134.444
+offset_top = -46.6667
+offset_right = -134.444
+offset_bottom = -46.6667

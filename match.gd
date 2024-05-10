@@ -25,17 +25,22 @@ func _ready():
 		#$Network.add_child(instance)
 		#cards.append(instance)
 	client_ready.rpc()
-	var num := 0
+	var playerNum := 0
+	for i in 2:
+		network_poll.poll_client_cards()
+		var output = await network_poll.poll_player(playerNum)
+		match_info.ban_card(units[output.selected_client_card].instantiate(),playerNum)
+		playerNum = 1 - playerNum
 	for i in 6:
-		var available_lanes = match_info.empty_lanes(num)
+		var available_lanes = match_info.empty_lanes(playerNum)
 		network_poll.poll_lanes(available_lanes,1)
 		network_poll.poll_client_cards()
 		@warning_ignore("confusable_local_declaration")
-		var output = await network_poll.poll_player(num)
-		match_info.add_card_to_match(units[output.selected_client_card].instantiate(),num,output.lanes[0])
-		num = 1 - num
+		var output = await network_poll.poll_player(playerNum)
+		match_info.add_card_to_match(units[output.selected_client_card].instantiate(),playerNum,output.lanes[0])
+		playerNum = 1 - playerNum
 	network_poll.poll_card_attacks()
-	var _output = await network_poll.poll_player(num)
+	var _output = await network_poll.poll_player(playerNum)
 
 @rpc()
 func client_ready():

@@ -1,17 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbboiim2ergkw"]
+[gd_scene load_steps=5 format=3 uid="uid://bbboiim2ergkw"]
 
 [ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="1_87fla"]
 [ext_resource type="Texture2D" uid="uid://dxok7jwkj4h0n" path="res://Sprites/Backgrounds/background_marksman.png" id="2_uysbj"]
 [ext_resource type="Texture2D" uid="uid://bi4c4cwyma0ts" path="res://Sprites/Character/gunner_icon.png" id="3_fxmo0"]
 [ext_resource type="Theme" uid="uid://c202glgpy6vvs" path="res://Fonts/small_minecraft_font.tres" id="4_gvhw1"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4dhs"]
-resource_local_to_scene = true
-size = Vector2(280, 47.7778)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1wxah"]
-resource_local_to_scene = true
-size = Vector2(280, 83.3333)
 
 [node name="Gunner" instance=ExtResource("1_87fla")]
 texture = ExtResource("2_uysbj")
@@ -46,9 +38,16 @@ bbcode_enabled = true
 text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Deal 2 Damage to nearby enemies. If this swapped last turn, this costs [img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/any_mana.png[/img] instead."
 fit_content = true
 
-[node name="CollisionShape2D" parent="AttackButtons/Attack1" index="0"]
-shape = SubResource("RectangleShape2D_t4dhs")
+[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
+visible = false
+layout_mode = 0
+offset_top = 9.0
+offset_right = 263.0
+offset_bottom = 56.0
 
-[node name="CollisionShape2D" parent="AttackButtons/Attack2" index="0"]
-position = Vector2(0, 60.5556)
-shape = SubResource("RectangleShape2D_1wxah")
+[node name="CheckButton2" type="CheckButton" parent="AttackButtons" index="1"]
+visible = false
+layout_mode = 0
+offset_top = 61.0
+offset_right = 263.0
+offset_bottom = 150.0
