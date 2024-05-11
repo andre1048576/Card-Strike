@@ -9,12 +9,11 @@ extends Sprite2D
 			return
 		position.x = 250 + new_lane*300
 		lane = new_lane
+@export var index : int
 
 @onready var select_button := $SelectButton
 @onready var heart_name := $HealthText
 @onready var attack_buttons := $AttackButtons.get_children()
-
-var index
 
 var health : int :
 	set(new_health):
@@ -30,10 +29,9 @@ func _ready():
 			position.y = 220
 
 func is_local_player_card():
-	
-	#the server views the screen from the perspective of the first player
-	#this only influences rendering on the server side
-	#0 here is for the first player owner
 	if multiplayer.is_server():
-		return player_owner == 0
+		return true
 	return GameManager.get_own_player_num() == player_owner
+
+func set_multiplayer_visibility_filter(callable : Callable):
+	get_node("MultiplayerSynchronizer").add_visibility_filter(callable)

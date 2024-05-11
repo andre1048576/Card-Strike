@@ -10,27 +10,40 @@
 [ext_resource type="PackedScene" uid="uid://dw5idt3jyqsfq" path="res://mana_discard.tscn" id="5_hsn4e"]
 [ext_resource type="Texture2D" uid="uid://b01r0mcebujk5" path="res://icon.svg" id="6_2qrgo"]
 
-[node name="Match" type="Node2D" node_paths=PackedStringArray("match_info")]
+[node name="Match" type="Node2D" node_paths=PackedStringArray("match_info", "client_cards")]
 script = ExtResource("1_g3j7b")
 match_info = NodePath("Network/MatchInfo")
+client_cards = NodePath("Network/ClientCards")
 
-[node name="CardSpawner" type="MultiplayerSpawner" parent="."]
+[node name="P1" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Cards/priest.tscn", "res://Cards/thief.tscn", "res://Cards/defender.tscn", "res://Cards/gunner.tscn", "res://Cards/warrior.tscn", "res://Cards/wizard.tscn")
+spawn_path = NodePath("../Network/ClientCards/0")
+
+[node name="P3" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Cards/priest.tscn", "res://Cards/thief.tscn", "res://Cards/defender.tscn", "res://Cards/gunner.tscn", "res://Cards/warrior.tscn", "res://Cards/wizard.tscn")
 spawn_path = NodePath("../Network/Cards")
 
+[node name="P2" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Cards/priest.tscn", "res://Cards/thief.tscn", "res://Cards/defender.tscn", "res://Cards/gunner.tscn", "res://Cards/warrior.tscn", "res://Cards/wizard.tscn")
+spawn_path = NodePath("../Network/ClientCards/1")
+
 [node name="OtherSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://match_info.tscn")
+_spawnable_scenes = PackedStringArray("res://match_info.tscn", "res://mana_pool.tscn")
 spawn_path = NodePath("../Network")
 
 [node name="Network" type="Node" parent="."]
+
+[node name="ClientCards" type="Node2D" parent="Network"]
+
+[node name="0" type="Node" parent="Network/ClientCards"]
+
+[node name="1" type="Node" parent="Network/ClientCards"]
 
 [node name="Cards" type="Node" parent="Network"]
 
 [node name="MatchInfo" parent="Network" node_paths=PackedStringArray("network", "matchNode") instance=ExtResource("2_au830")]
 network = NodePath("..")
 matchNode = NodePath("../..")
-
-[node name="ClientCards" type="Node2D" parent="Network"]
 
 [node name="Mana" type="Node2D" parent="Network"]
 visible = false

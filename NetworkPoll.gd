@@ -74,8 +74,7 @@ func reset():
 	prePolledInput = {}
 
 func post_poll(params : Dictionary,pId):
-	if params.has("selected_client_card"):
-		clientPolled.clientCardSelected.rpc_id(pId,params.selected_client_card)
+	pass
 
 
 

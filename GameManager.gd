@@ -11,7 +11,6 @@ func get_player_num(pID : int) -> int:
 		return 0
 	elif pID == players[1]:
 		return 1
-	print_debug("this shouldn't have been listed")
 	return -1
 
 func get_own_player_num() -> int:

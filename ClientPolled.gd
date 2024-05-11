@@ -5,13 +5,9 @@ extends Node
 @export var networkPoll : NetworkPoll
 @export var network : Node
 
-var init_client_cards : Array
-
 var client_cards : Array :
 	get:
-		if not client_cards:
-			client_cards = clientCardNode.get_children()
-			init_client_cards = clientCardNode.get_children()
+		client_cards = clientCardNode.get_child(GameManager.get_own_player_num()).get_children()
 		return client_cards
 var confirmFunctions
 var selected := {}
@@ -29,11 +25,6 @@ func pollClient(confFunctions,acceptableInput):
 	if acceptableInput.has("attack"):
 		print("not polling client cards yipee",acceptableInput)
 		pollAttacks()
-
-@rpc()
-func clientCardSelected(cardIndex : int):
-	client_cards.erase(init_client_cards[cardIndex])
-	init_client_cards[cardIndex].queue_free()
 	
 func pollClientCards():
 	var clientCardGroupButton = GroupButton.new()
@@ -75,6 +66,7 @@ func finishedPoll():
 
 func selected_a_card(card : Card):
 	selected.selected_client_card = card.index
+	print(selected)
 
 func unselected_a_card(_card : Card):
 	selected.erase("selected_client_card")

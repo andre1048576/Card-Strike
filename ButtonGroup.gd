@@ -25,7 +25,7 @@ func instantiate():
 		button.visible = true
 
 func on_pressed(button : CheckButton):
-	var card : Card = button.get_parent()
+	var card : Card = button.get_parent().get_parent()
 	if button.button_pressed:
 		selected = card
 		emit_signal("pressed",card)

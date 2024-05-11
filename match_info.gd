@@ -13,10 +13,10 @@ func is_lane_empty(player_num : int,lane_num : int) -> bool:
 
 func add_card_to_match(card : Card,team : int,lane : int):
 	lanes[team][lane] = card
-	lane_names[team][lane] = card.name
 	card.player_owner = team
 	card.lane = lane
 	network.get_node("Cards").add_child(card,true)
+	lane_names[team][lane] = card.name
 
 func empty_lanes(player_num : int) -> Array:
 	var output := []
