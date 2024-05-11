@@ -18,9 +18,6 @@ func add_card_to_match(card : Card,team : int,lane : int):
 	card.lane = lane
 	network.get_node("Cards").add_child(card,true)
 
-func ban_card(card : Card,team : int):
-	banned_cards[team] = card.name
-
 func empty_lanes(player_num : int) -> Array:
 	var output := []
 	for i in 3:

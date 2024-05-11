@@ -3,9 +3,16 @@ extends Node
 
 signal _input_confirmed
 
-var currPlayerNum
+var currPlayerNum = -1 :
+	get:
+		if currPlayerNum == -1:
+			currPlayerNum = GameManager.get_own_player_num()
+		return currPlayerNum
 var acceptableInput = {}
 var confirmFunctions = []
+var prePolledInput = {}
+
+@onready var clientPolled : ClientPolled = $ClientPolled
 
 @export var matchInfo : Match_Info
 
@@ -20,15 +27,11 @@ func confirm_input(params):
 	if GameManager.get_id_from_player_num(currPlayerNum) != multiplayer.get_remote_sender_id():
 		_input_confirmed.emit({params = params,valid = false})
 		return
-	var hasFailed = false
-	for confirmFunction in confirmFunctions:
-		if not Callable(self,confirmFunction).call(params,acceptableInput):
-			hasFailed = true
-			break
-	_input_confirmed.emit({params = params,valid = not hasFailed})
+	var valid = confirmFunctions.all(func(confirmFunction): return Callable(self,confirmFunction).call(params,acceptableInput))
+	_input_confirmed.emit({params = params,valid = valid})
 
-func confirm_lane_input(params,validInput):
-	if not params.lanes:
+func confirm_lane_input(params : Dictionary,validInput):
+	if not params.has("lanes"):
 		return false
 	params.lanes = remove_duplicates(params.lanes)
 	if len(params.lanes) != validInput.num_lanes:
@@ -53,8 +56,6 @@ func confirm_client_cards(params : Dictionary,validInput):
 	if not params.has("selected_client_card"):
 		return false
 	var playerId = currPlayerNum
-	if playerId == null:
-		playerId = GameManager.get_own_player_num()
 	if matchInfo.has_card_deployed(playerId,params.selected_client_card):
 		return false
 	if matchInfo.is_card_banned(playerId,params.selected_client_card):
@@ -64,9 +65,19 @@ func confirm_client_cards(params : Dictionary,validInput):
 func confirm_attack(params : Dictionary,validInput):
 	pass
 
+func swap_visibility():
+	pass
+
 func reset():
 	acceptableInput = {}
 	confirmFunctions = []
+	prePolledInput = {}
+
+func post_poll(params : Dictionary,pId):
+	if params.has("selected_client_card"):
+		clientPolled.clientCardSelected.rpc_id(pId,params.selected_client_card)
+
+
 
 func poll_player(playerNum):
 	var is_valid = false
@@ -74,13 +85,18 @@ func poll_player(playerNum):
 	var pId = GameManager.get_id_from_player_num(playerNum)
 	var params
 	while not is_valid:
-		$ClientPolled.pollClient.rpc_id(pId,confirmFunctions,acceptableInput)
+		clientPolled.pollClient.rpc_id(pId,confirmFunctions,acceptableInput)
 		params = await _input_confirmed
 		is_valid = params.valid
+	params.params.merge(prePolledInput)
 	reset()
+	post_poll(params.params,pId)
 	return params.params
 
 func poll_lanes(lanes,num_lanes):
+	if len(lanes) == num_lanes:
+		prePolledInput.lanes = lanes
+		return
 	acceptableInput["lanes"] = lanes
 	acceptableInput["num_lanes"] = num_lanes
 	confirmFunctions.append("confirm_lane_input")

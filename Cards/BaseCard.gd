@@ -12,7 +12,9 @@ extends Sprite2D
 
 @onready var select_button := $SelectButton
 @onready var heart_name := $HealthText
-@onready var attack_buttons := $AttackButtons
+@onready var attack_buttons := $AttackButtons.get_children()
+
+var index
 
 var health : int :
 	set(new_health):
@@ -21,18 +23,17 @@ var health : int :
 
 func _ready():
 	health = max_health
-	if find_parent("Network") and not multiplayer.is_server():
+	if find_parent("Network") and not find_parent("ClientCards"):
 		if is_local_player_card():
 			position.y = 800
 		else:
 			position.y = 220
 
 func is_local_player_card():
-	return GameManager.get_own_player_num() == player_owner
 	
-func get_selection_button():
-	return $SelectButton
-
-#TODO: ensure the player has the mana to play the attacks
-func get_attack_buttons():
-	return attack_buttons.get_children()
+	#the server views the screen from the perspective of the first player
+	#this only influences rendering on the server side
+	#0 here is for the first player owner
+	if multiplayer.is_server():
+		return player_owner == 0
+	return GameManager.get_own_player_num() == player_owner

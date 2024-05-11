@@ -1,16 +1,18 @@
+class_name ClientPolled
 extends Node
 
-@export var notNetwork : Node
+@export var clientCardNode : Node
 @export var networkPoll : NetworkPoll
 @export var network : Node
 
 var init_client_cards : Array
 
 var client_cards : Array :
-	set(new_value):
+	get:
 		if not client_cards:
-			init_client_cards = new_value
-		client_cards = new_value
+			client_cards = clientCardNode.get_children()
+			init_client_cards = clientCardNode.get_children()
+		return client_cards
 var confirmFunctions
 var selected := {}
 var validInput
@@ -27,14 +29,18 @@ func pollClient(confFunctions,acceptableInput):
 	if acceptableInput.has("attack"):
 		print("not polling client cards yipee",acceptableInput)
 		pollAttacks()
+
+@rpc()
+func clientCardSelected(cardIndex : int):
+	client_cards.erase(init_client_cards[cardIndex])
+	init_client_cards[cardIndex].queue_free()
 	
 func pollClientCards():
-	client_cards = notNetwork.get_children()
 	var clientCardGroupButton = GroupButton.new()
 	clientCardGroupButton.pressed.connect(selected_a_card)
 	clientCardGroupButton.unpressed.connect(unselected_a_card)
 	for card : Card in client_cards as Array[Card]:
-		clientCardGroupButton.add(card.get_selection_button())
+		clientCardGroupButton.add(card.select_button)
 	clientCardGroupButton.instantiate()
 	currentGroupButtons.append(clientCardGroupButton)
 
@@ -43,25 +49,18 @@ func pollLanes():
 	laneGroupButton.pressed.connect(selected_a_lane)
 	laneGroupButton.unpressed.connect(unselected_a_lane)
 	for lane : int in validInput.lanes:
-		laneGroupButton.add(get_child(lane).get_selection_button())
+		laneGroupButton.add(get_child(lane).select_button)
 	laneGroupButton.instantiate()
 	currentGroupButtons.append(laneGroupButton)
-
-func buttongroup_clicked(pressed):
-	print(pressed)
-
-func finishedPoll():
-	for groupButton in currentGroupButtons:
-		groupButton.clear()
-	currentGroupButtons = []
 
 func pollAttacks():
 	var attackButtonGroup = GroupButton.new()
 	for card : Card in network.get_node("Cards").get_children():
 		if card.is_local_player_card():
-			for attackButton in card.get_attack_buttons():
+			for attackButton in card.attack_buttons:
 				attackButtonGroup.add(attackButton)
 	attackButtonGroup.instantiate()
+	currentGroupButtons.append(attackButtonGroup)
 
 func reset(confFunctions,acceptableInput):
 	selected = {}
@@ -69,8 +68,13 @@ func reset(confFunctions,acceptableInput):
 	confirmFunctions = confFunctions
 	validInput = acceptableInput
 
+func finishedPoll():
+	for groupButton in currentGroupButtons:
+		groupButton.clear()
+	currentGroupButtons = []
+
 func selected_a_card(card : Card):
-	selected.selected_client_card = init_client_cards.find(card)
+	selected.selected_client_card = card.index
 
 func unselected_a_card(_card : Card):
 	selected.erase("selected_client_card")
@@ -82,10 +86,7 @@ func unselected_a_lane(card : Card):
 	selected.erase("lanes")
 
 func client_confirm_input(params):
-	for confirmFunction in confirmFunctions:
-		if not Callable(networkPoll,confirmFunction).call(params,validInput):
-			return false
-	return true
+	return confirmFunctions.all(func(confirmFunction): return Callable(networkPoll,confirmFunction).call(params,validInput))
 
 func confirm_button_pressed():
 	if not is_polled:

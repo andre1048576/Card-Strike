@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3t5hwpoyaymd"]
+[gd_scene load_steps=10 format=3 uid="uid://c3t5hwpoyaymd"]
 
 [ext_resource type="Script" path="res://match.gd" id="1_g3j7b"]
 [ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="2_22qm7"]
 [ext_resource type="PackedScene" uid="uid://dkfr4qajremvn" path="res://match_info.tscn" id="2_au830"]
+[ext_resource type="PackedScene" uid="uid://buxlapjlyhfmb" path="res://mana_pool.tscn" id="3_g6ea0"]
 [ext_resource type="Script" path="res://NetworkPoll.gd" id="3_we5l8"]
+[ext_resource type="PackedScene" uid="uid://bl54x7xpfxxn5" path="res://mana_draw.tscn" id="4_sussb"]
 [ext_resource type="Script" path="res://ClientPolled.gd" id="4_uenrn"]
+[ext_resource type="PackedScene" uid="uid://dw5idt3jyqsfq" path="res://mana_discard.tscn" id="5_hsn4e"]
+[ext_resource type="Texture2D" uid="uid://b01r0mcebujk5" path="res://icon.svg" id="6_2qrgo"]
 
 [node name="Match" type="Node2D" node_paths=PackedStringArray("match_info")]
 script = ExtResource("1_g3j7b")
@@ -14,7 +18,7 @@ match_info = NodePath("Network/MatchInfo")
 _spawnable_scenes = PackedStringArray("res://Cards/priest.tscn", "res://Cards/thief.tscn", "res://Cards/defender.tscn", "res://Cards/gunner.tscn", "res://Cards/warrior.tscn", "res://Cards/wizard.tscn")
 spawn_path = NodePath("../Network/Cards")
 
-[node name="MatchInfoSpawner" type="MultiplayerSpawner" parent="."]
+[node name="OtherSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://match_info.tscn")
 spawn_path = NodePath("../Network")
 
@@ -26,15 +30,31 @@ spawn_path = NodePath("../Network")
 network = NodePath("..")
 matchNode = NodePath("../..")
 
-[node name="NotNetwork" type="Node" parent="."]
+[node name="ClientCards" type="Node2D" parent="Network"]
+
+[node name="Mana" type="Node2D" parent="Network"]
+visible = false
+
+[node name="ManaDiscard" parent="Network/Mana" instance=ExtResource("5_hsn4e")]
+
+[node name="ManaDraw" parent="Network/Mana" instance=ExtResource("4_sussb")]
+
+[node name="ManaPool" parent="Network/Mana" instance=ExtResource("3_g6ea0")]
+
+[node name="TextureRect" type="TextureRect" parent="Network/Mana"]
+offset_left = 1353.0
+offset_top = 306.0
+offset_right = 1655.0
+offset_bottom = 641.0
+texture = ExtResource("6_2qrgo")
 
 [node name="NetworkPoll" type="Node" parent="." node_paths=PackedStringArray("matchInfo")]
 script = ExtResource("3_we5l8")
 matchInfo = NodePath("../Network/MatchInfo")
 
-[node name="ClientPolled" type="Node" parent="NetworkPoll" node_paths=PackedStringArray("notNetwork", "networkPoll", "network")]
+[node name="ClientPolled" type="Node" parent="NetworkPoll" node_paths=PackedStringArray("clientCardNode", "networkPoll", "network")]
 script = ExtResource("4_uenrn")
-notNetwork = NodePath("../../NotNetwork")
+clientCardNode = NodePath("../../Network/ClientCards")
 networkPoll = NodePath("..")
 network = NodePath("../../Network")
 

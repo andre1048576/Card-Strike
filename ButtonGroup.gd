@@ -2,7 +2,7 @@ class_name GroupButton
 
 var buttongroup := ButtonGroup.new()
 var buttons : Array[CheckButton]= []
-var selected : Card
+var selected : Card = null
 
 signal pressed(card : Card)
 signal unpressed(card : Card)
@@ -30,6 +30,7 @@ func on_pressed(button : CheckButton):
 		selected = card
 		emit_signal("pressed",card)
 	else:
+		selected = null
 		emit_signal("unpressed",card)
 
 func clear():
