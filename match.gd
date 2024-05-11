@@ -22,6 +22,7 @@ func _ready():
 	client_init()
 	var playerNum := 0
 	for i in 2:
+		network_poll.visible_right_side.rpc(0)
 		network_poll.poll_client_cards()
 		var output = await network_poll.poll_player(playerNum)
 		match_info.banned_cards[playerNum] = units[output.selected_client_card].instantiate().name
@@ -36,8 +37,10 @@ func _ready():
 		delete_client_card(playerNum,card.name)
 		match_info.add_card_to_match(card,playerNum,output.lanes[0])
 		playerNum = 1 - playerNum
-	network_poll.poll_card_attacks()
-	var _output = await network_poll.poll_player(playerNum)
+	network_poll.visible_right_side.rpc(1)
+	$Network/Mana/ManaPool.init()
+	#network_poll.poll_card_attacks()
+	#var _output = await network_poll.poll_player(playerNum)
 
 func client_init():
 	for pNum in 2:

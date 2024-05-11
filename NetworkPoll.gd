@@ -65,8 +65,10 @@ func confirm_client_cards(params : Dictionary,validInput):
 func confirm_attack(params : Dictionary,validInput):
 	pass
 
-func swap_visibility():
-	pass
+@rpc("call_local")
+func visible_right_side(val : int):
+	$"../Network/ClientCards".visible = (val == 0)
+	$"../Network/Mana".visible = (val == 1)
 
 func reset():
 	acceptableInput = {}

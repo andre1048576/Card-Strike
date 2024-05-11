@@ -2,10 +2,12 @@ class_name GroupButton
 
 var buttongroup := ButtonGroup.new()
 var buttons : Array[CheckButton]= []
-var selected : Card = null
+var depth : int
+var selection
+#TODO: figure out how to add select
 
-signal pressed(card : Card)
-signal unpressed(card : Card)
+signal pressed(control : Node2D)
+signal unpressed(control : Node2D)
 
 func _init():
 	buttongroup.pressed.connect(on_pressed)
@@ -20,21 +22,27 @@ func remove(button : CheckButton):
 
 func instantiate():
 	for button : CheckButton in buttons:
-		button.set_pressed_no_signal(button == selected)
+		button.set_pressed_no_signal(false)
 		button.button_group = buttongroup
 		button.visible = true
 
 func on_pressed(button : CheckButton):
-	var card : Card = button.get_parent().get_parent()
+	selection = button
+	for i in depth:
+		selection = button.get_parent()
 	if button.button_pressed:
-		selected = card
-		emit_signal("pressed",card)
+		emit_signal("pressed",selection)
 	else:
-		selected = null
-		emit_signal("unpressed",card)
+		emit_signal("unpressed",selection)
+		selection = null
 
 func clear():
 	for button : CheckButton in buttons:
 		button.set_pressed_no_signal(false)
 		buttongroup = null
 		button.visible = false
+
+static func generateButtonGroup(depth : int = 1):
+	var buttongroup = GroupButton.new()
+	buttongroup.depth = depth
+	return buttongroup

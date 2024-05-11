@@ -27,7 +27,7 @@ func pollClient(confFunctions,acceptableInput):
 		pollAttacks()
 	
 func pollClientCards():
-	var clientCardGroupButton = GroupButton.new()
+	var clientCardGroupButton = GroupButton.generateButtonGroup()
 	clientCardGroupButton.pressed.connect(selected_a_card)
 	clientCardGroupButton.unpressed.connect(unselected_a_card)
 	for card : Card in client_cards as Array[Card]:
@@ -36,7 +36,7 @@ func pollClientCards():
 	currentGroupButtons.append(clientCardGroupButton)
 
 func pollLanes():
-	var laneGroupButton = GroupButton.new()
+	var laneGroupButton = GroupButton.generateButtonGroup()
 	laneGroupButton.pressed.connect(selected_a_lane)
 	laneGroupButton.unpressed.connect(unselected_a_lane)
 	for lane : int in validInput.lanes:
@@ -45,7 +45,7 @@ func pollLanes():
 	currentGroupButtons.append(laneGroupButton)
 
 func pollAttacks():
-	var attackButtonGroup = GroupButton.new()
+	var attackButtonGroup = GroupButton.generateButtonGroup(2)
 	for card : Card in network.get_node("Cards").get_children():
 		if card.is_local_player_card():
 			for attackButton in card.attack_buttons:
@@ -66,7 +66,6 @@ func finishedPoll():
 
 func selected_a_card(card : Card):
 	selected.selected_client_card = card.index
-	print(selected)
 
 func unselected_a_card(_card : Card):
 	selected.erase("selected_client_card")
