@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3t5hwpoyaymd"]
+[gd_scene load_steps=11 format=3 uid="uid://c3t5hwpoyaymd"]
 
 [ext_resource type="Script" path="res://match.gd" id="1_g3j7b"]
 [ext_resource type="PackedScene" uid="uid://bwdwj1qmtexh6" path="res://Cards/character_card.tscn" id="2_22qm7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://NetworkPoll.gd" id="3_we5l8"]
 [ext_resource type="PackedScene" uid="uid://bl54x7xpfxxn5" path="res://mana_draw.tscn" id="4_sussb"]
 [ext_resource type="Script" path="res://ClientPolled.gd" id="4_uenrn"]
+[ext_resource type="Script" path="res://mana_draw.gd" id="5_5hjhq"]
 [ext_resource type="PackedScene" uid="uid://dw5idt3jyqsfq" path="res://mana_discard.tscn" id="5_hsn4e"]
 [ext_resource type="PackedScene" uid="uid://cjmapdvc5hn5v" path="res://mana_gem.tscn" id="6_d54t8"]
 
@@ -56,6 +57,11 @@ visible = false
 [node name="ManaDiscard" parent="Network/Mana" instance=ExtResource("5_hsn4e")]
 
 [node name="ManaDraw" parent="Network/Mana" instance=ExtResource("4_sussb")]
+script = ExtResource("5_5hjhq")
+red = 16
+blue = 16
+green = 12
+black = 12
 
 [node name="ManaPool" parent="Network/Mana" instance=ExtResource("3_g6ea0")]
 mana_gem_resource = ExtResource("6_d54t8")
@@ -94,13 +100,18 @@ position = Vector2(550, 220)
 z_index = -2
 position = Vector2(850, 220)
 
-[node name="Confirm" type="Button" parent="NetworkPoll"]
-offset_left = 1722.0
-offset_top = 17.0
-offset_right = 1892.0
-offset_bottom = 85.0
+[node name="Control" type="CanvasLayer" parent="."]
+
+[node name="Confirm" type="Button" parent="Control"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -197.0
+offset_top = 26.0
+offset_right = -27.0
+offset_bottom = 94.0
+grow_horizontal = 0
+size_flags_horizontal = 8
 text = "Confirm"
 
-[node name="ConfirmFunctions" type="Node" parent="NetworkPoll"]
-
-[connection signal="pressed" from="NetworkPoll/Confirm" to="NetworkPoll/ClientPolled" method="confirm_button_pressed"]
+[connection signal="pressed" from="Control/Confirm" to="NetworkPoll/ClientPolled" method="confirm_button_pressed"]

@@ -14,29 +14,26 @@ texture = ExtResource("3_llta0")
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="." index="1"]
 offset_left = -130.0
-offset_top = -34.4444
-offset_right = 526.0
-offset_bottom = 130.556
-scale = Vector2(0.4, 0.4)
+offset_top = -34.0
+offset_right = 130.0
+offset_bottom = 10.0
 mouse_filter = 2
 theme = ExtResource("4_rnobd")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Heal 2 Health to adjacent allies. Heal 1 Health to this."
+text = "[img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/gray_mana.png[/img]: Heal 2 Health to adjacent allies. Heal 1 Health to this."
 fit_content = true
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="." index="2"]
 offset_left = -130.0
-offset_top = 19.8889
-offset_right = 526.0
-offset_bottom = 184.889
-scale = Vector2(0.4, 0.4)
+offset_top = 20.0
+offset_right = 134.0
+offset_bottom = 83.0
 mouse_filter = 2
 theme = ExtResource("4_rnobd")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/any_mana.png[/img]:Remove all block on the enemy here.
-Deal 2 Damage."
+text = "[img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/any_mana.png[/img]: Remove all block on the enemy here. Deal 2 Damage."
 fit_content = true
 
 [node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]

@@ -20,6 +20,7 @@ func _ready():
 	if !multiplayer.is_server():
 		return
 	client_init()
+	server_init()
 	var playerNum := 0
 	for i in 2:
 		network_poll.visible_right_side.rpc(0)
@@ -48,10 +49,13 @@ func client_init():
 			var instance : Card = units[i].instantiate()
 			instance.index = i
 			@warning_ignore("integer_division")
-			instance.position = Vector2(1209+(i%3)*280,295 + 375*(i/3))
+			instance.position = Vector2(1150+(i%3)*290,310 + 420*(i/3))
 			instance.set_multiplayer_visibility_filter(func(pId):
 				return GameManager.get_player_num(pId) == pNum)
 			client_cards.get_child(pNum).add_child(instance)
+
+func server_init():
+	$Network/Mana/ManaDraw.init()
 
 func delete_client_card(pNum : int,cardName : String):
 	client_cards.get_child(pNum).get_node(cardName).queue_free()

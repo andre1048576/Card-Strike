@@ -14,40 +14,40 @@ texture = ExtResource("3_pkrr0")
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="." index="4"]
 offset_left = -130.0
-offset_top = -34.4444
-offset_right = 526.0
-offset_bottom = 130.556
-scale = Vector2(0.4, 0.4)
+offset_top = -34.0
+offset_right = 130.0
+offset_bottom = -6.0
 mouse_filter = 2
 theme = ExtResource("4_d0r8q")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img]:Deal 2 Damage."
+text = "[img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/gray_mana.png[/img]: Deal 2 Damage."
 fit_content = true
 
 [node name="RichTextLabel6" type="RichTextLabel" parent="." index="5"]
 offset_left = -130.0
-offset_top = 19.8889
-offset_right = 526.0
-offset_bottom = 184.889
-scale = Vector2(0.4, 0.4)
+offset_top = -3.0
+offset_right = 128.0
+offset_bottom = 45.0
 mouse_filter = 2
 theme = ExtResource("4_d0r8q")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 bbcode_enabled = true
-text = "[img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/gray_mana.png[/img][img=50]res://Icons/any_mana.png[/img]:This and an adjacent ally gain 1 strength."
+text = "[img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/any_mana.png[/img]: This and an adjacent ally gain 1 strength."
 fit_content = true
 
-[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
+[node name="AttackButtons" parent="." index="7"]
 visible = false
+
+[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
 layout_mode = 0
 offset_top = 9.0
 offset_right = 263.0
-offset_bottom = 56.0
+offset_bottom = 39.0
 
 [node name="CheckButton2" type="CheckButton" parent="AttackButtons" index="1"]
-visible = false
 layout_mode = 0
-offset_top = 63.3333
-offset_right = 263.0
-offset_bottom = 110.333
+offset_left = 0.444
+offset_top = 41.6667
+offset_right = 263.444
+offset_bottom = 88.6664

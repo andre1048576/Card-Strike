@@ -24,7 +24,6 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 
 [node name="CardBack" type="Sprite2D"]
-scale = Vector2(0.9, 0.9)
 texture = ExtResource("1_16fob")
 script = ExtResource("2_ygjbg")
 
@@ -38,11 +37,10 @@ scale = Vector2(0.116319, 0.116319)
 texture = ExtResource("3_uvbkt")
 
 [node name="HealthText" type="RichTextLabel" parent="."]
-offset_left = 78.8889
-offset_top = -163.333
-offset_right = 129.889
-offset_bottom = -113.333
-scale = Vector2(0.5, 0.5)
+offset_left = 71.1111
+offset_top = -162.222
+offset_right = 114.111
+offset_bottom = -135.222
 mouse_filter = 2
 theme = ExtResource("4_s5tbi")
 theme_override_colors/default_color = Color(0, 0, 0, 1)

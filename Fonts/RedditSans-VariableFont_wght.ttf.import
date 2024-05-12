@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://csq58eiybwx32"
-path="res://.godot/imported/pixel font-7.ttf-aba44e9ec21025605eecebe0960cde3b.fontdata"
+uid="uid://ch0upco7j0sjx"
+path="res://.godot/imported/RedditSans-VariableFont_wght.ttf-b647ada1fc04a91f4309990364f8c99b.fontdata"
 
 [deps]
 
-source_file="res://Fonts/pixel font-7.ttf"
-dest_files=["res://.godot/imported/pixel font-7.ttf-aba44e9ec21025605eecebe0960cde3b.fontdata"]
+source_file="res://Fonts/RedditSans-VariableFont_wght.ttf"
+dest_files=["res://.godot/imported/RedditSans-VariableFont_wght.ttf-b647ada1fc04a91f4309990364f8c99b.fontdata"]
 
 [params]
 

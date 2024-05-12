@@ -21,16 +21,18 @@ func add_mana(mana_color : String):
 	mana_colors.append(mana_color)
 	var mana_gem = mana_gem_resource.instantiate() as Sprite2D
 	var index : int = len(mana)
-	mana_gem.position = Vector2(1000 + index * 200,500)
+	mana_gem.position = Vector2(1000 + index * 200,450 + (index % 2)*50)
 	mana.append(mana_gem)
 	mana_gem.self_modulate = get_color_from_name(mana_color)
 	add_child(mana_gem,true)
 	print("added mana ",mana_color)
 
+
+
 func refill():
 	while len(mana_colors) < 4:
 		#draw mana from the mana bag
-		add_mana(["red","blue","green","black"].pick_random())
+		add_mana($"../ManaDraw".draw())
 		pass
 	print("done refilling!!")
 
