@@ -40,7 +40,7 @@ func pollClientCards():
 	currentGroupButtons.append(clientCardGroupButton)
 
 func pollLanes():
-	var laneGroupButton = GroupButton.generateButtonGroup()
+	var laneGroupButton = GroupButton.generateButtonGroup(validInput.num_lanes)
 	laneGroupButton.pressed.connect(selected_a_lane)
 	laneGroupButton.unpressed.connect(unselected_a_lane)
 	for lane : int in validInput.lanes:
@@ -49,7 +49,7 @@ func pollLanes():
 	currentGroupButtons.append(laneGroupButton)
 
 func pollAttacks():
-	var attackButtonGroup = GroupButton.generateButtonGroup(2)
+	var attackButtonGroup = GroupButton.generateButtonGroup()
 	for card : Card in network.get_node("Cards").get_children():
 		if card.is_local_player_card():
 			for attackButton in card.attack_buttons:
@@ -58,8 +58,15 @@ func pollAttacks():
 	currentGroupButtons.append(attackButtonGroup)
 
 func pollMana():
-	selected.mana_index = [2,3]
-	confirm_button.visible = true
+	var manaButtonGroup = ManaGroupButton.generateManaButtonGroup()
+	manaButtonGroup.pressed.connect(selected_mana)
+	manaButtonGroup.unpressed.connect(unselected_mana)
+	for button in $"../../Network/Mana/ManaPool".get_children():
+		if not button is ManaGem:
+			continue
+		manaButtonGroup.add(button)
+	manaButtonGroup.instantiate()
+	currentGroupButtons.append(manaButtonGroup)
 
 func init_poll(confFunctions,acceptableInput):
 	is_polled = true
@@ -76,20 +83,28 @@ func finishedPoll():
 	currentGroupButtons = []
 	reset()
 
-func selected_a_card(card : Card):
-	selected.selected_client_card = card.index
+func selected_a_card(cardGroup : Array[BaseButton]):
+	selected.selected_client_card = cardGroup[0].get_parent().index
 	confirm_button_visibility()
 
-func unselected_a_card(_card : Card):
+func unselected_a_card():
 	selected.erase("selected_client_card")
 	confirm_button_visibility()
 
-func selected_a_lane(card : Card):
-	selected.lanes = [card.name.to_int()]
+func selected_a_lane(cardGroup : Array[BaseButton]):
+	selected.lanes = cardGroup.map(func(button : BaseButton): return button.get_parent().name.to_int())
 	confirm_button_visibility()
 
-func unselected_a_lane(card : Card):
+func unselected_a_lane():
 	selected.erase("lanes")
+	confirm_button_visibility()
+
+func selected_mana(manaGroup : Array[BaseButton]):
+	selected.mana_index = manaGroup.map(func(button : ManaGem): return button.index)
+	confirm_button_visibility()
+
+func unselected_mana():
+	selected.erase("mana_index")
 	confirm_button_visibility()
 
 func confirm_button_visibility():
