@@ -36,15 +36,16 @@ bbcode_enabled = true
 text = "[img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/gray_mana.png[/img][img=20]res://Icons/any_mana.png[/img]: Remove all block on the enemy here. Deal 2 Damage."
 fit_content = true
 
-[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
+[node name="AttackButtons" parent="." index="7"]
 visible = false
+
+[node name="CheckButton" type="CheckButton" parent="AttackButtons" index="0"]
 layout_mode = 0
 offset_top = 9.0
 offset_right = 263.0
 offset_bottom = 56.0
 
 [node name="CheckButton2" type="CheckButton" parent="AttackButtons" index="1"]
-visible = false
 layout_mode = 0
 offset_top = 60.0
 offset_right = 263.0

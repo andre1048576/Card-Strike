@@ -10,9 +10,9 @@ properties/1/path = NodePath(".:self_modulate")
 properties/1/spawn = true
 properties/1/replication_mode = 0
 
-[node name="ManaGem" type="Sprite2D"]
+[node name="ManaGem" type="TextureButton"]
 scale = Vector2(0.28, 0.28)
-texture = ExtResource("1_00ack")
+texture_normal = ExtResource("1_00ack")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_dgp7j")

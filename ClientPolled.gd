@@ -4,6 +4,7 @@ extends Node
 @export var clientCardNode : Node
 @export var networkPoll : NetworkPoll
 @export var network : Node
+@export var confirm_button : Button
 
 var client_cards : Array :
 	get:
@@ -17,7 +18,7 @@ var is_polled := false
 
 @rpc()
 func pollClient(confFunctions,acceptableInput):
-	reset(confFunctions,acceptableInput)
+	init_poll(confFunctions,acceptableInput)
 	if acceptableInput.has("client_cards"):
 		pollClientCards()
 	if acceptableInput.has("lanes"):
@@ -25,6 +26,9 @@ func pollClient(confFunctions,acceptableInput):
 	if acceptableInput.has("attack"):
 		print("not polling client cards yipee",acceptableInput)
 		pollAttacks()
+	if acceptableInput.has("mana"):
+		pollMana()
+		print("mana polling time!")
 	
 func pollClientCards():
 	var clientCardGroupButton = GroupButton.generateButtonGroup()
@@ -53,28 +57,43 @@ func pollAttacks():
 	attackButtonGroup.instantiate()
 	currentGroupButtons.append(attackButtonGroup)
 
-func reset(confFunctions,acceptableInput):
-	selected = {}
+func pollMana():
+	selected.mana_index = [2,3]
+	confirm_button.visible = true
+
+func init_poll(confFunctions,acceptableInput):
 	is_polled = true
 	confirmFunctions = confFunctions
 	validInput = acceptableInput
+
+func reset():
+	selected = {}
+	confirm_button_visibility()
 
 func finishedPoll():
 	for groupButton in currentGroupButtons:
 		groupButton.clear()
 	currentGroupButtons = []
+	reset()
 
 func selected_a_card(card : Card):
 	selected.selected_client_card = card.index
+	confirm_button_visibility()
 
 func unselected_a_card(_card : Card):
 	selected.erase("selected_client_card")
+	confirm_button_visibility()
 
 func selected_a_lane(card : Card):
 	selected.lanes = [card.name.to_int()]
+	confirm_button_visibility()
 
 func unselected_a_lane(card : Card):
 	selected.erase("lanes")
+	confirm_button_visibility()
+
+func confirm_button_visibility():
+	confirm_button.visible = client_confirm_input(selected)
 
 func client_confirm_input(params):
 	return confirmFunctions.all(func(confirmFunction): return Callable(networkPoll,confirmFunction).call(params,validInput))
@@ -82,7 +101,6 @@ func client_confirm_input(params):
 func confirm_button_pressed():
 	if not is_polled:
 		return
-	if client_confirm_input(selected):
-		networkPoll.confirm_input.rpc_id(1,selected)
-		is_polled = false
-		finishedPoll()
+	networkPoll.confirm_input.rpc_id(1,selected)
+	is_polled = false
+	finishedPoll()

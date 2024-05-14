@@ -12,7 +12,7 @@ var acceptableInput = {}
 var confirmFunctions = []
 var prePolledInput = {}
 
-@onready var clientPolled : ClientPolled = $ClientPolled
+@export var clientPolled : ClientPolled
 
 @export var matchInfo : Match_Info
 
@@ -30,27 +30,29 @@ func confirm_input(params):
 	var valid = confirmFunctions.all(func(confirmFunction): return Callable(self,confirmFunction).call(params,acceptableInput))
 	_input_confirmed.emit({params = params,valid = valid})
 
-func confirm_lane_input(params : Dictionary,validInput):
+func confirm_lane(params : Dictionary,validInput):
 	if not params.has("lanes"):
 		return false
-	params.lanes = remove_duplicates(params.lanes)
-	if len(params.lanes) != validInput.num_lanes:
+	var lanes = remove_duplicates(params.lanes)
+	if len(lanes) != validInput.num_lanes:
 		return false
-	for lane in params.lanes:
+	for lane in lanes:
 		if not lane in validInput.lanes:
 			return false
 	return true
 
-#CURRENTLY UNUSED
-func confirm_mana_input(params : Dictionary,validInput):
-	if not params.has('color_mana'):
-		params.color_mana = 0
-	if not params.has('wild_mana'):
-		params.wild_mana = 0
-	if not params.has('any_mana'):
-		params.any_mana = 0
-	return params.color_mana >= validInput.color_mana \
-	and params.wild_mana >= validInput.wild_mana
+func confirm_mana(params : Dictionary,validInput):
+	if not params.has("mana_index"):
+		return false
+	var mana_indexes : Array = remove_duplicates(params.mana_index)
+	for index : int in mana_indexes:
+		if index < 0 or index > 4:
+			return false
+	var mana_pool : ManaPool = $"../Network/Mana/ManaPool"
+	match len(mana_indexes):
+		1: return mana_pool.mana_colors[mana_indexes[0]] == "black"
+		2: return mana_indexes.all(func(index : int): return mana_pool.mana_colors[index] != "black")
+		_: return false
 
 func confirm_client_cards(params : Dictionary,validInput):
 	if not params.has("selected_client_card"):
@@ -100,13 +102,11 @@ func poll_lanes(lanes,num_lanes):
 		return
 	acceptableInput["lanes"] = lanes
 	acceptableInput["num_lanes"] = num_lanes
-	confirmFunctions.append("confirm_lane_input")
+	confirmFunctions.append("confirm_lane")
 
-func poll_mana(color_mana,any_mana,wild_mana):
-	acceptableInput["color_mana"] = color_mana
-	acceptableInput["wild_mana"] = wild_mana
-	acceptableInput["any_mana"] = any_mana
-	confirmFunctions.append("confirm_mana_input")
+func poll_mana():
+	acceptableInput["mana"] = true
+	confirmFunctions.append("confirm_mana")
 
 func poll_client_cards():
 	acceptableInput["client_cards"] = true

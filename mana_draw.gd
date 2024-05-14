@@ -1,8 +1,9 @@
+class_name ManaDrawPile
 extends Node2D
 
 
 var draw_pile : Array[String] = []
-var draw_pile_size : int
+@export var draw_pile_size : int
 @export var red := 0
 @export var blue := 0
 @export var green := 0
@@ -21,8 +22,9 @@ func init():
 	draw_pile_size = len(draw_pile)
 
 func draw():
-	draw_pile_size = len(draw_pile)-1
-	return draw_pile.pop_front()
+	var value = draw_pile.pop_front()
+	draw_pile_size -= 1
+	return value
 
 func refill():
 	pass

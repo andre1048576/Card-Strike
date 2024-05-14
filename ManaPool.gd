@@ -1,14 +1,11 @@
+class_name ManaPool
 extends Node
 
-
-@export var manaBag : Node
+@export var manaBag : ManaDrawPile
 @export var mana_gem_resource : Resource
 
-@export var mana_colors = []
+@export var mana_colors : Array = []
 var mana = []
-
-func draw_mana(index : int):
-	pass
 
 func get_color_from_name(color_name : String):
 	match color_name:
@@ -19,7 +16,7 @@ func get_color_from_name(color_name : String):
 
 func add_mana(mana_color : String):
 	mana_colors.append(mana_color)
-	var mana_gem = mana_gem_resource.instantiate() as Sprite2D
+	var mana_gem = mana_gem_resource.instantiate() as TextureButton
 	var index : int = len(mana)
 	mana_gem.position = Vector2(1000 + index * 200,450 + (index % 2)*50)
 	mana.append(mana_gem)
@@ -27,12 +24,10 @@ func add_mana(mana_color : String):
 	add_child(mana_gem,true)
 	print("added mana ",mana_color)
 
-
-
 func refill():
-	while len(mana_colors) < 4:
+	while len(mana_colors) < 5:
 		#draw mana from the mana bag
-		add_mana($"../ManaDraw".draw())
+		add_mana(manaBag.draw())
 		pass
 	print("done refilling!!")
 
